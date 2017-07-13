@@ -39,8 +39,11 @@ h = hitColor
 m = missColor
 u = unknownColor
 
+global returnCount
+returnCount = 0
+
 # get my ships
-payload = { "p": "p1" }
+payload = { "p": "p2" }
 r = requests.post('https://amantestemail.mybluemix.net/givemeships', data = payload)
 mySeaRes = r.json()
 mySeaCoords = json.dumps(mySeaRes)
@@ -64,6 +67,11 @@ for idx, loc in enumerate(mySea):
     if idx == boatLoc:
       mySea[idx] = b
 
+print ('ships received')
+sense.set_pixels(mySea)
+time.sleep(2)
+sense.clear()
+
 enemySea = [
 u, u, u, u, u, u, u, u,
 u, u, u, u, u, u, u, u,
@@ -81,24 +89,30 @@ def main():
   global y
   global score
   global thiscolor
+  global returnCount
 
   try:
-    # while there are still unsunken boats
-    # TODO
-    while True:  
+    # while we haven't clicked the return 3 times in a row
+    while returnCount < 3:  
       for event in pygame.event.get():
         if event.type == KEYDOWN:
           sense.set_pixel(x, y, thiscolor[0], thiscolor[1], thiscolor[2])
 
           if event.key == K_DOWN and y < 7:
+            returnCount = 0
             y = y + 1
           elif event.key == K_UP and y > 0:
+            returnCount = 0
             y = y - 1
           elif event.key == K_RIGHT and x < 7:
+            returnCount = 0
             x = x + 1
           elif event.key == K_LEFT and x > 0:
+            returnCount = 0
             x = x - 1
           elif event.key == K_RETURN:
+            returnCount = returnCount + 1
+            print(returnCount)
             print(str(x) + ' ' + str(y))
             payload= {"x": x, "y": y, "player": "p1" }
             r = requests.post('https://amantestemail.mybluemix.net/shot/', data = payload)
