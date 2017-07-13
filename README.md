@@ -1,5 +1,6 @@
 # nrpi-battleship
 *Node-RED-Pi-Battleship*
+
 This app builds on the work done in [SenseHAT_Battleships](https://github.com/TeCoEd/SenseHAT_Battleships).
 
 ## Updates
@@ -13,6 +14,7 @@ Some changes up to this point are:
 
 ## Node-RED
 *This code is not yet in this repo*
+
 [Node-RED](https://nodered.org/) provides the server, which in turn provides the following features:
 - where each player's boats are placed
 - collecting shot coordinates from each player
@@ -21,6 +23,7 @@ Some changes up to this point are:
 
 ## Dashboard
 *This code is not yet in this repo*
+
 The dashboard reads the [dashDB](https://www.ibm.com/analytics/us/en/technology/cloud-data-services/dashdb/)
 
 ## Usage

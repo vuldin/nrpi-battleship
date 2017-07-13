@@ -12,13 +12,6 @@ pygame.display.set_mode((400, 400))
 sense = SenseHat()
 #sense.low_light = True
 
-# rest
-'''
-coords = {"x": 4, "y": 5 }
-resp = requests.post('https://amantestemail.mybluemix.net/shot/', json = coords)
-print('posted coords: {}'.format(resp.json()))
-'''
-
 # variables 
 global seaColor
 global boatColor
@@ -72,32 +65,24 @@ def main():
     global score
     global thiscolor
 
-
-    ####################################################### 
-    ############ Code to control joystick #################
-    ### controls the movement of the targetting system ####
-    #######################################################
-    
+    # while there are still unsunken boats
+    # TODO
     while True:  
         for event in pygame.event.get():
             if event.type == KEYDOWN:
-                sense.set_pixel(x, y, thiscolor[0], thiscolor[1], thiscolor[2])  # Black 0,0,0 means OFF
+                sense.set_pixel(x, y, thiscolor[0], thiscolor[1], thiscolor[2])
+                #thiscolor = sense.get_pixel(x, y)
 
                 if event.key == K_DOWN and y < 7:
                     y = y + 1
-                    thiscolor = sense.get_pixel(x, y)
                 elif event.key == K_UP and y > 0:
                     y = y - 1
-                    thiscolor = sense.get_pixel(x, y)
                 elif event.key == K_RIGHT and x < 7:
                     x = x + 1
-                    thiscolor = sense.get_pixel(x, y)
                 elif event.key == K_LEFT and x > 0:
                     x = x - 1
-                    thiscolor = sense.get_pixel(x, y)
                 elif event.key == K_RETURN:
-                    print(str(x), str(y))
-                    thiscolor = sense.get_pixel(x, y)
+                    print(str(x) + ' ' + str(y))
 
                     payload= {"x": x, "y": y, "player": "p1" }
                     r = requests.post('https://amantestemail.mybluemix.net/shot/', data = payload)
@@ -111,14 +96,16 @@ def main():
 
                     if result == 'hit':
                         enemySea[your_position] = hitColor
-                        sense.set_pixels(enemySea)
 
                     if result == 'crazy??':
-                        print('already hit at this location')
+                        print('already a hit')
                         
                     elif enemySea[your_position] == seaColor:
-                        Sea[your_position] = seaColor
-                        sense.set_pixels(enemySea)
+                        enemySea[your_position] = seaColor
+
+                    sense.set_pixels(enemySea)
+
+                thiscolor = sense.get_pixel(x, y)
 
             sense.set_pixel(x, y, 0, 255, 0) #colour of pixel for location target
             
