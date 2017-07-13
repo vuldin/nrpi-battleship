@@ -73,16 +73,15 @@ def main():
       for event in pygame.event.get():
         if event.type == KEYDOWN:
           sense.set_pixel(x, y, thiscolor[0], thiscolor[1], thiscolor[2])
-          #thiscolor = sense.get_pixel(x, y)
 
           if event.key == K_DOWN and y < 7:
-              y = y + 1
+            y = y + 1
           elif event.key == K_UP and y > 0:
-              y = y - 1
+            y = y - 1
           elif event.key == K_RIGHT and x < 7:
-              x = x + 1
+            x = x + 1
           elif event.key == K_LEFT and x > 0:
-              x = x - 1
+            x = x - 1
           elif event.key == K_RETURN:
             print(str(x) + ' ' + str(y))
             payload= {"x": x, "y": y, "player": "p1" }
@@ -97,11 +96,15 @@ def main():
 
             if result == 'hit':
               enemySea[your_position] = hitColor
-            if result == 'crazy??':
-              print('already a hit')
-            elif enemySea[your_position] == seaColor:
+            elif result == 'miss':
               enemySea[your_position] = seaColor
-
+            elif result == 'crazy??':
+              enemySea[your_position] = hitColor
+              print('already a hit')
+            else:
+              print('unknown response: ' + result)
+            sense.set_pixels(mySea)
+            time.sleep(2)
             sense.set_pixels(enemySea)
 
           thiscolor = sense.get_pixel(x, y)
