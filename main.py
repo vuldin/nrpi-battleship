@@ -38,16 +38,32 @@ b = boatColor
 h = hitColor
 m = missColor
 u = unknownColor
+
+# get my ships
+payload = { "p": "p1" }
+r = requests.post('https://amantestemail.mybluemix.net/givemeships', data = payload)
+mySeaRes = r.json()
+mySeaCoords = json.dumps(mySeaRes)
+
+myBoatLocs = []
+for coord in mySeaRes:
+  myBoatLocs.append((coord['y']*8)+coord['x'])
+
 mySea = [
 s, s, s, s, s, s, s, s,
 s, s, s, s, s, s, s, s,
-b, s, s, s, s, s, b, s,
-b, s, s, s, s, s, b, s,
-b, s, s, s, s, s, b, s,
-b, s, s, s, s, s, s, s,
-s, s, b, b, b, s, s, s,
-s, s, s, s, s, s, b, b
+s, s, s, s, s, s, s, s,
+s, s, s, s, s, s, s, s,
+s, s, s, s, s, s, s, s,
+s, s, s, s, s, s, s, s,
+s, s, s, s, s, s, s, s,
+s, s, s, s, s, s, s, s
 ]
+for idx, loc in enumerate(mySea):
+  for boatLoc in myBoatLocs:
+    if idx == boatLoc:
+      mySea[idx] = b
+
 enemySea = [
 u, u, u, u, u, u, u, u,
 u, u, u, u, u, u, u, u,
